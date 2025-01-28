@@ -7,12 +7,11 @@ import (
 const DEFAULT_DISCOUNT = 5000
 
 type Customer struct {
-	Name         string
-	Age          int
-	balance      int
-	debt         int
-	Discount     bool
-	CalcDiscount func() (int, error)
+	Name     string
+	Age      int
+	balance  int
+	debt     int
+	Discount bool
 }
 
 func NewCustomer(name string, age int, balance int, debt int, discount bool) *Customer {
@@ -25,25 +24,26 @@ func NewCustomer(name string, age int, balance int, debt int, discount bool) *Cu
 	}
 }
 
-func CalcPrice(cust *Customer, price int) (int, error) {
+func (c *Customer) CalcDiscount() (int, error) {
 	err := errors.New("discount is not avaliable")
-	cust.CalcDiscount = func() (int, error) {
-
-		if !cust.Discount {
-			return 0, err
-		}
-		err = nil
-		result := DEFAULT_DISCOUNT - cust.debt
-		if result < 0 {
-			return 0, nil
-		}
-		return result, nil
+	if !c.Discount {
+		return 0, err
 	}
+	err = nil
+	result := DEFAULT_DISCOUNT - c.debt
+	if result < 0 {
+		return 0, nil
+	}
+	return result, nil
+
+}
+
+func (c *Customer) CalcPrice(price int) (int, error) {
 	finalPrice := 0
-	discount, _ := cust.CalcDiscount()
-	if _, err := cust.CalcDiscount(); err == nil {
+	discount, err := c.CalcDiscount()
+	if _, err := c.CalcDiscount(); err == nil {
 		finalPrice = price - discount
-		if cust.balance+discount < price {
+		if c.balance+discount < price {
 			err = errors.New("not enough balance")
 			return finalPrice, err
 		} else if price == 0 {
