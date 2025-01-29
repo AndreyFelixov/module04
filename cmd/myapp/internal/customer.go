@@ -38,10 +38,10 @@ func (c *Customer) CalcDiscount() (int, error) {
 
 }
 
-func (c *Customer) CalcPrice(price int) (int, error) {
+func (c *Customer) CalcPrice(discounter Discounter, price int) (int, error) {
 	finalPrice := 0
-	discount, err := c.CalcDiscount()
-	if _, err := c.CalcDiscount(); err == nil {
+	discount, err := discounter.CalcDiscount()
+	if err == nil {
 		finalPrice = price - discount
 		if c.balance+discount < price {
 			err = errors.New("not enough balance")
