@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+	"fmt"
 )
 
 const DEFAULT_DISCOUNT = 5000
@@ -45,6 +46,7 @@ func CalcPrice(discounter Discounter, price int) (int, error) {
 		finalPrice = price - discount
 	}
 	if finalPrice < 0 {
+		fmt.Println("You have 100 percent sale")
 		finalPrice = 0
 	}
 	return finalPrice, err
