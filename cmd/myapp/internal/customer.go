@@ -38,25 +38,15 @@ func (c *Customer) CalcDiscount() (int, error) {
 
 }
 
-func (c *Customer) CalcPrice(discounter Discounter, price int) (int, error) {
+func CalcPrice(discounter Discounter, price int) (int, error) {
 	finalPrice := 0
 	discount, err := discounter.CalcDiscount()
 	if err == nil {
 		finalPrice = price - discount
-		if c.balance+discount < price {
-			err = errors.New("not enough balance")
-			return finalPrice, err
-		} else if price == 0 {
-			err = errors.New("price can't be 0, its not a razdacha na spavne")
-			finalPrice = 0
-			return finalPrice, err
-		} else if finalPrice < 0 {
-			err = errors.New("you have a 100 percent sale")
-			finalPrice = 0
-			return finalPrice, err
-		}
 	}
-
+	if finalPrice < 0 {
+		finalPrice = 0
+	}
 	return finalPrice, err
 }
 
