@@ -12,7 +12,7 @@ func main() {
 	// startTransaction(partner)
 	// fmt.Printf("%+v\n", partner)
 	price := 2222
-	finalPrice, err := cust.CalcPrice(cust, price)
+	finalPrice, err := internal.CalcPrice(cust, price)
 	fmt.Printf("Final price: %d; %v\n", finalPrice, err)
 	fmt.Printf("%+v\n", cust)
 }
