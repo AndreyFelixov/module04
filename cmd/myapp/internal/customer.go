@@ -10,18 +10,16 @@ const DEFAULT_DISCOUNT = 5000
 type Customer struct {
 	Name     string
 	Age      int
-	balance  int
-	debt     int
 	Discount bool
+	*Overduer
 }
 
-func NewCustomer(name string, age int, balance int, debt int, discount bool) *Customer {
+func NewCustomer(name string, age int, discount bool, balance int, debt int) *Customer {
 	return &Customer{
 		Name:     name,
 		Age:      age,
-		balance:  balance,
-		debt:     debt,
 		Discount: discount,
+		Overduer: NewOverduer(balance, debt),
 	}
 }
 
@@ -51,7 +49,6 @@ func CalcPrice(discounter Discounter, price int) (int, error) {
 	}
 	return finalPrice, err
 }
-
 func (c *Customer) WrtOffDebt() error {
 	if c.debt >= c.balance {
 		return errors.New("not possible write off")
