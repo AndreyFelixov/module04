@@ -1,26 +1,19 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"myapp/internal"
 )
 
 func main() {
-	cust := internal.NewCustomer("Dmitry", 23, 10000, 1000, true)
-	partner := internal.NewPartner("Andrey", 25, 15000, 2500)
-	k := 95
-	fmt.Println(startTransactionDynamic(cust))
-	fmt.Println(startTransactionDynamic(partner))
-	fmt.Println(startTransactionDynamic(k))
-	fmt.Printf("%+v\n", cust)
-	fmt.Printf("%+v\n", partner)
+	customer := internal.NewCustomer("Dmitry", 23, true, 10000, 1000)
+	fmt.Println("Customer:", customer.Name, customer.Age, customer.Discount)
+	fmt.Println("Overduer: Balance =", customer.GetBalance(), ", Debt =", customer.GetDebt())
+	startTransaction(customer)
+	fmt.Println("Overduer: Balance =", customer.GetBalance(), ", Debt =", customer.GetDebt())
 }
 
-func startTransactionDynamic(i interface{}) error {
-	debtor, ok := i.(internal.Debtor)
-	if !ok {
-		return errors.New("incorrect type")
-	}
+func startTransaction(debtor internal.Debtor) error {
+
 	return debtor.WrtOffDebt()
 }
